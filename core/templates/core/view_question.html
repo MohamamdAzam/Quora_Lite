@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<h2>{{ question.title }}</h2>
+<p class="text-muted">Asked by {{ question.author.username }} on {{ question.created_at|date:"M d, Y" }}</p>
+<p>{{ question.content }}</p>
+
+{% if question.photo %}
+    <img src="{{ question.photo.url }}" class="img-fluid mb-3" alt="Question Image">
+{% endif %}
+
+
+{% if request.user == question.author %}
+    <form method="post" action="{% url 'delete_question' question.id %}" class="mt-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this question?');">Delete Question</button>
+    </form>
+{% endif %}
+
+<hr>
+<h4>Answers</h4>
+{% for answer in question.answers.all %}
+    <div class="card mb-2">
+        <div class="card-body">
+            <p>{{ answer.content }}</p>
+            <small>By {{ answer.author.username }} on {{ answer.created_at|date:"M d, Y" }}</small>
+            <form action="{% url 'like_answer' answer.id %}" method="post" class="d-inline ms-3">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-success">Like ({{ answer.likes.count }})</button>
+            </form>
+        </div>
+    </div>
+{% empty %}
+    <p>No answers yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<hr>
+<h5>Write your answer</h5>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="answer">Your Answer</label>
+        <textarea name="answer" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Post Answer</button>
+</form>
+{% endif %}
+
+{% endblock %}

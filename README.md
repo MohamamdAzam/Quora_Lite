@@ -28,7 +28,6 @@ cd Quora_Lite
 
 ```bash
 python -m venv env
-source env/bin/activate  # Linux/macOS
 env\Scripts\activate     # Windows
 ```
 

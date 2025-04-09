@@ -4,12 +4,14 @@
 <h2>Latest Questions</h2>
 <div class="list-group">
     {% for question in questions %}
-        <a href="{% url 'view_question' question.id %}" class="list-group-item list-group-item-action">
-            <h5 class="mb-1">{{ question.title }}</h5>
-            <small>Asked by {{ question.author.username }} on {{ question.created_at|date:"M d, Y" }}</small>
+        <a href="{% url 'view_question' question.id %}"
+           class="list-group-item list-group-item-action border-top rounded-top mb-4 shadow-sm"
+           style="border-left: 4px solid #0d6efd; background-color: #f8f9fa;">
+            <h5 class="mb-1 text-primary">{{ question.title }}</h5>
+            <small class="text-muted">Asked by {{ question.author.username }} on {{ question.created_at|date:"M d, Y" }}</small>
         </a>
     {% empty %}
-        <p>No questions yet.</p>
+        <p class="text-muted">No questions yet.</p>
     {% endfor %}
 </div>
 {% endblock %}
